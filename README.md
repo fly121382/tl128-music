@@ -24,9 +24,12 @@ docs/                  构建产物（提交到仓库，Pages 直接吃这个目
 2. `python fetch_meta.py` —— 读标签、搜封面和歌词
    （漏了就跑 `python collect.py` / `python fill_lyrics2.py`，会从 iTunes、Kugou、lrclib 补）
 3. `python match_lrc.py --apply` —— 拿本地 `E:\音乐\神之曲1` 里的 .lrc 补时间轴
-4. `python build.py` —— 生成 `docs/`
-5. `python check.py docs` —— 自检（媒体、封面、播客、sitemap）
-6. 发布：**只走 git push**
+4. `python make_slugs.py --write` —— 给新歌补 ASCII slug（链接和 OSS 文件名都用它；
+   中文自动转拼音，日文/特殊符号在脚本顶部的 `MANUAL` 里手写，也可直接改 `data/songs.json`）
+5. `python upload_oss.py` —— 按 `<slug>.m4a` 传到 OSS（已传过的会跳过）
+6. `python build.py` —— 生成 `docs/`
+7. `python check.py docs` —— 自检（媒体、封面、播客、sitemap）
+8. 发布：**只走 git push**
 
 ```powershell
 git add -A

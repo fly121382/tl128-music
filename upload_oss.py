@@ -30,6 +30,8 @@ def main():
             print("[%02d/%d] 缺源文件 %s" % (i, len(songs), s.get("file")))
             continue
         size = os.path.getsize(src)
+        if not s.get("slug"):
+            print("!! %s 没有 slug（先跑 python make_slugs.py --write）" % s["title"])
         key = "tl128-music/media/%s.m4a" % (s.get("slug") or s["id"])
         meta = None
         try:

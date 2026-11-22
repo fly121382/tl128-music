@@ -144,7 +144,9 @@ def main():
         s["cover_url"] = "%s/%s" % (base, urllib.parse.quote(s.get("cover") or "assets/icon.png"))
         s["cover_rel"] = urllib.parse.quote(s.get("cover") or "assets/icon.png")
         # 单曲页/分享链接用 ASCII slug（中文歌名在链接里会被百分号编码成一串 %E4%B8%8B…）
-        s["slug"] = s.get("slug") or s["id"]
+        if not s.get("slug"):
+            print("!! 这首歌没有 slug，链接会退回中文名：%s（跑 python make_slugs.py --write）" % s["title"])
+            s["slug"] = s["id"]
         s["url"] = "%s/#/song/%s" % (base, urllib.parse.quote(s["slug"]))
         s["page"] = "song/%s.html" % urllib.parse.quote(s["slug"])
         s["pubdate"] = datetime(2026, 11, 23, tzinfo=timezone.utc).strftime(

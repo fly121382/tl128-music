@@ -66,16 +66,19 @@ def main():
     rows = []
     bad = []
     for s in songs:
-        sl = slugify(s["title"])
+        old = s.get("slug")
+        sl = old or slugify(s["title"])
         if not sl or not re.fullmatch(r"[a-z0-9-]+", sl):
             bad.append((s["title"], sl))
         if sl in seen:
             bad.append(("重复: %s / %s" % (seen[sl], s["title"]), sl))
         seen[sl] = s["title"]
-        rows.append((s["title"], sl, len(sl)))
-        s["slug"] = sl
-    for t, sl, n in rows:
-        print("%-42s -> %-46s %2d" % (t, sl, n))
+        rows.append((s["title"], sl, len(sl), bool(old)))
+        # 只补缺的，不覆盖手写过的（日文/特殊符号靠 MANUAL 或手动改）
+        if not old:
+            s["slug"] = sl
+    for t, sl, n, had in rows:
+        print("%-42s -> %-46s %2d%s" % (t, sl, n, "" if had else "  (新生成)"))
     print()
     print("共 %d 首，最长 %d 字符，重复/非法 %d 个" % (len(rows), max(r[2] for r in rows), len(bad)))
     for b in bad:
