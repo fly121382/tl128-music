@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{ s.title }} · 翻唱：{{ cfg.singer }} · {{ cfg.title }}</title>
+<meta name="description" content="《{{ s.title }}》 原唱：{{ s.artist }}{% if s.album %}（《{{ s.album }}》）{% endif %} ｜ 翻唱：{{ cfg.singer }} ｜ 时长 {{ s.dur_txt }}">
+<meta property="og:type" content="music.song">
+<meta property="og:title" content="{{ s.title }} · {{ cfg.singer }}">
+<meta property="og:description" content="原唱：{{ s.artist }} ｜ 翻唱：{{ cfg.singer }}">
+<meta property="og:image" content="{{ s.cover_url }}">
+<meta property="og:audio" content="{{ s.media_url }}">
+<meta property="og:url" content="{{ s.url }}">
+<link rel="canonical" href="{{ s.url }}">
+<link rel="stylesheet" href="{{ base }}/assets/style.css">
+</head>
+<body>
+<div class="wrap song-view">
+  <p class="sv-kicker"><a href="{{ base }}/">← 回到 {{ cfg.title }}</a></p>
+  <div class="sv-head">
+    <img class="sv-cover" src="{{ s.cover_url }}" alt="{{ s.title }} 封面">
+    <div class="sv-info">
+      <p class="sv-kicker">翻唱作品</p>
+      <h1 class="sv-title">{{ s.title }}</h1>
+      <p class="sv-by">原唱 <b>{{ s.artist }}</b> ｜ 翻唱 <b>{{ cfg.singer }}</b></p>
+      <p class="sv-by">{% if s.album %}专辑《{{ s.album }}》 ｜ {% endif %}时长 {{ s.dur_txt }}</p>
+      <p class="sv-acts"><a class="btn primary" href="{{ s.url }}">播放这首歌</a></p>
+    </div>
+  </div>
+  {% if s.lyrics %}
+  <div class="lyrics">
+    <h2>歌词</h2>{% for line in s.lyrics %}<span class="lrc-line">{{ line }}</span>
+{% endfor %}
+  </div>
+  {% endif %}
+</div>
+<script>location.replace({{ s.url|tojson }});</script>
+</body>
+</html>

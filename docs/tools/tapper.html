@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>歌词打点工具 · 特零128 的歌</title>
+<style>
+  :root{--bg:#15171a;--fg:#e8e6e2;--muted:#9aa0a6;--line:#2c3034;--card:#1c2024;--accent:#f59e0b}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.7 -apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+  header{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:12px 18px;display:flex;
+    align-items:center;gap:12px;flex-wrap:wrap}
+  h1{font-size:15px;margin:0;font-weight:700;letter-spacing:.04em}
+  select,input,button{font:inherit;color:var(--fg);background:var(--card);border:1px solid var(--line);
+    border-radius:8px;padding:6px 10px}
+  select{max-width:340px}
+  button{cursor:pointer}
+  button:hover{border-color:var(--accent);color:var(--accent)}
+  button.primary{background:var(--accent);color:#1a1206;border-color:var(--accent);font-weight:700}
+  audio{width:100%;max-width:520px;height:36px}
+  main{max-width:900px;margin:0 auto;padding:18px}
+  .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+  .tip{color:var(--muted);font-size:12.5px}
+  ol{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card)}
+  li{display:flex;gap:12px;align-items:baseline;padding:7px 14px;border-bottom:1px solid var(--line);cursor:pointer}
+  li:last-child{border-bottom:0}
+  li .t{width:74px;flex-shrink:0;color:var(--muted);font-variant-numeric:tabular-nums;font-size:12.5px}
+  li .s{flex:1}
+  li.cur{background:color-mix(in srgb,var(--accent) 16%,transparent);box-shadow:inset 3px 0 0 var(--accent)}
+  li.cur .s{color:#fff;font-weight:600}
+  li.done .t{color:var(--accent)}
+  .bar{display:flex;gap:10px;align-items:center;margin-top:14px;flex-wrap:wrap}
+  kbd{border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:0 6px;font-size:12px;
+    font-family:ui-monospace,monospace;color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <h1>歌词打点</h1>
+  <select id="song"></select>
+  <button id="load" class="primary" type="button">载入</button>
+  <span class="tip" id="state"></span>
+</header>
+<main>
+  <div class="row">
+    <audio id="au" controls preload="metadata"></audio>
+  </div>
+  <div class="row tip">
+    <span><kbd>空格</kbd> 给当前行打时间并跳到下一行</span>
+    <span><kbd>Backspace</kbd> 回退一行</span>
+    <span><kbd>↑</kbd><kbd>↓</kbd> 换行</span>
+    <span><kbd>←</kbd><kbd>→</kbd> 退/进 3 秒</span>
+    <span>点某一行可把它设为当前行</span>
+  </div>
+  <ol id="lines"></ol>
+  <div class="bar">
+    <button id="export" type="button">导出打点 JSON</button>
+    <button id="clear" type="button">清空本曲</button>
+    <span class="tip" id="progress"></span>
+  </div>
+</main>
+<script>
+(() => {
+  const $ = (s) => document.querySelector(s);
+  const au = $('#au');
+  let songs = [], cur = null, times = [], idx = 0;
+
+  const fmt = (t) => {
+    if (t == null) return '—';
+    const m = Math.floor(t / 60), s = t % 60;
+    return m + ':' + s.toFixed(2).padStart(5, '0');
+  };
+  const storeKey = (id) => 'tl128-tap-' + id;
+
+  function renderList() {
+    const ol = $('#lines');
+    ol.innerHTML = (cur ? cur.l : []).map((line, i) => `
+      <li data-i="${i}" class="${i === idx ? 'cur' : ''}${times[i] != null ? ' done' : ''}">
+        <span class="t">${fmt(times[i])}</span><span class="s">${line.replace(/[<>&]/g, (c) => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]))}</span>
+      </li>`).join('');
+    const done = times.filter((t) => t != null).length;
+    $('#progress').textContent = `已打点 ${done} / ${(cur ? cur.l.length : 0)} 行`;
+    if (cur) {
+      const li = ol.querySelector('.cur');
+      if (li) li.scrollIntoView({ block: 'nearest' });
+    }
+  }
+
+  function save() {
+    if (!cur) return;
+    localStorage.setItem(storeKey(cur.id), JSON.stringify(times));
+  }
+  function loadTimes() {
+    times = [];
+    if (!cur) return;
+    try {
+      const raw = JSON.parse(localStorage.getItem(storeKey(cur.id)) || '[]');
+      if (Array.isArray(raw)) times = raw;
+    } catch (e) { times = []; }
+    idx = Math.max(0, times.findIndex((t) => t == null));
+    if (idx < 0) idx = 0;
+  }
+
+  function stamp() {
+    if (!cur) return;
+    times[idx] = Math.round(au.currentTime * 100) / 100;
+    save();
+    idx = Math.min(cur.l.length - 1, idx + 1);
+    renderList();
+  }
+
+  function loadSong(id) {
+    cur = songs.find((s) => s.id === id);
+    if (!cur) return;
+    au.src = '/' + cur.m;
+    loadTimes();
+    renderList();
+    $('#state').textContent = `${cur.t} · 原唱 ${cur.a}`;
+    document.title = cur.t + ' · 歌词打点';
+  }
+
+  fetch('/assets/songs.json').then((r) => r.json()).then((arr) => {
+    songs = arr.filter((s) => s.l && s.l.length > 1);
+    $('#song').innerHTML = songs.map((s) => `<option value="${s.id}">${s.t} — ${s.a}</option>`).join('');
+    loadSong(songs[0] && songs[0].id);
+  }).catch(() => { $('#state').textContent = '需要从站点根目录打开（/tools/tapper.html）'; });
+
+  $('#song').onchange = (e) => loadSong(e.target.value);
+  $('#load').onclick = () => loadSong($('#song').value);
+
+  $('#lines').onclick = (e) => {
+    const li = e.target.closest('li');
+    if (!li) return;
+    idx = Number(li.dataset.i);
+    renderList();
+  };
+
+  $('#clear').onclick = () => {
+    if (!cur) return;
+    if (!confirm('清空这首的所有打点？')) return;
+    times = [];
+    idx = 0;
+    localStorage.removeItem(storeKey(cur.id));
+    renderList();
+  };
+
+  $('#export').onclick = () => {
+    if (!cur) return;
+    const out = {
+      id: cur.id, title: cur.t, dur: cur.d,
+      lines: cur.l.map((s, i) => ({ t: times[i] == null ? null : times[i], s })),
+    };
+    const blob = new Blob([JSON.stringify(out, null, 1)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = cur.id + '.timing.json';
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  };
+
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT') return;
+    switch (e.key) {
+      case ' ': e.preventDefault(); if (au.paused) au.play(); stamp(); break;
+      case 'Backspace':
+        e.preventDefault();
+        if (idx > 0) { idx -= 1; times[idx] = null; save(); renderList(); }
+        break;
+      case 'ArrowDown': e.preventDefault(); idx = Math.min((cur ? cur.l.length : 1) - 1, idx + 1); renderList(); break;
+      case 'ArrowUp': e.preventDefault(); idx = Math.max(0, idx - 1); renderList(); break;
+      case 'ArrowLeft': e.preventDefault(); au.currentTime = Math.max(0, au.currentTime - 3); break;
+      case 'ArrowRight': e.preventDefault(); au.currentTime = Math.min(au.duration || 0, au.currentTime + 3); break;
+      default: break;
+    }
+  });
+})();
+</script>
+</body>
+</html>

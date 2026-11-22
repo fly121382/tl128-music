@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>{{ cfg.title }} · {{ cfg.subTitle }}</title>
+<meta name="description" content="{{ cfg.description }}">
+<meta property="og:type" content="music.playlist">
+<meta property="og:title" content="{{ cfg.title }}">
+<meta property="og:description" content="{{ cfg.description }}">
+<meta property="og:image" content="{{ base }}/assets/podcast-cover.jpg">
+<meta name="theme-color" content="#c2410c">
+<link rel="icon" href="{{ base }}/assets/icon.png">
+<link rel="apple-touch-icon" href="{{ base }}/assets/icon.png">
+<link rel="alternate" type="application/rss+xml" title="播客 · {{ cfg.title }}" href="{{ base }}/podcast.xml">
+<link rel="stylesheet" href="{{ base }}/assets/style.css">
+<script>try{var t=localStorage.getItem('tl128m-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap tb-inner">
+    <a class="brand" href="#/">特零128<span>的歌</span></a>
+    <nav class="nav" id="nav">
+      <a href="#/" data-nav="home">全部</a>
+      <a href="#/netease" data-nav="netease">网易云</a>
+      <a href="#/favorites" data-nav="favorites">收藏</a>
+      <a href="#/friends" data-nav="friends">友链</a>
+      <a href="{{ base }}/podcast.xml" target="_blank" rel="noopener">播客</a>
+    </nav>
+    <div class="tools">
+      <input id="q" type="search" placeholder="搜歌名 / 原唱…" aria-label="搜索" autocomplete="off">
+      <button class="icon-btn" id="theme" type="button" aria-label="切换深浅色">◐</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" id="view"><div class="loading">载入中…</div></main>
+
+<noscript>
+  <div class="wrap">
+    <h1>{{ cfg.title }}</h1>
+    <p>{{ cfg.description }}</p>
+    <ol class="songs">
+      {% for s in songs %}
+      <li class="song"><span class="s-idx">{{ loop.index }}</span>
+        <img class="s-cover" src="{{ base }}/{{ s.cover_rel }}" alt="{{ s.title }}">
+        <span class="s-main"><a class="s-title" href="{{ base }}/{{ s.page }}">{{ s.title }}</a>
+        <span class="s-artist">原唱：{{ s.artist }} ｜ {{ s.dur_txt }}</span></span></li>
+      {% endfor %}
+    </ol>
+  </div>
+</noscript>
+
+<footer class="site-foot foot">
+  <div class="wrap">
+    {% for s in [] %}{% endfor %}
+    <p>{{ cfg.footer }} · © 2026 {{ cfg.author }} · <a href="{{ base }}/podcast.xml">播客 RSS</a></p>
+  </div>
+</footer>
+
+<div class="player" id="player">
+  <div class="seekbar" id="seekbar" role="slider" aria-label="播放进度" tabindex="0"><div class="fill" id="seekfill"></div></div>
+  <div class="p-inner">
+    <img class="p-cover" id="p-cover" src="{{ base }}/assets/icon.png" alt="">
+    <div class="p-meta">
+      <a class="p-title" id="p-title" href="#/">未在播放</a>
+      <span class="p-artist" id="p-artist">点一首歌开始</span>
+    </div>
+    <div class="p-ctrls">
+      <button class="pb opt" id="btn-shuffle" type="button" title="随机 (S)" aria-label="随机">⇄</button>
+      <button class="pb opt" id="btn-prev" type="button" title="上一首 (←)" aria-label="上一首">⏮</button>
+      <button class="pb play" id="btn-play" type="button" title="播放 / 暂停 (空格)" aria-label="播放">▶</button>
+      <button class="pb" id="btn-next" type="button" title="下一首 (→)" aria-label="下一首">⏭</button>
+      <button class="pb opt" id="btn-repeat" type="button" title="循环 (R)" aria-label="循环">↻</button>
+    </div>
+    <div class="p-times"><span id="t-cur">0:00</span><span>/</span><span id="t-dur">0:00</span></div>
+    <div class="p-extra">
+      <button class="pb fav" id="btn-fav" type="button" title="收藏 (F)" aria-label="收藏">♡</button>
+      <button class="pb txt opt" id="btn-speed" type="button" title="倍速">1.0×</button>
+      <button class="pb opt" id="btn-sleep" type="button" title="睡眠定时">⏱</button>
+      <span class="p-vol opt"><span>♪</span><input id="vol" type="range" min="0" max="100" value="100" aria-label="音量"></span>
+      <button class="pb queue" id="btn-queue" type="button" title="播放列表 (Q)" aria-label="播放列表">☰</button>
+    </div>
+  </div>
+</div>
+
+<div class="mask" id="mask"></div>
+<aside class="drawer" id="drawer" aria-label="播放列表">
+  <div class="dw-head">
+    <strong>播放列表</strong><span class="n" id="dw-count"></span>
+    <button class="icon-btn" id="dw-close" type="button" aria-label="关闭">✕</button>
+  </div>
+  <div class="dw-tools">
+    <input id="dw-q" type="search" placeholder="在列表里筛选…" aria-label="筛选">
+  </div>
+  <ul class="dw-list" id="dw-list"></ul>
+</aside>
+
+<div class="pop" id="sleep-pop">
+  <button data-min="15" type="button">15 分钟</button>
+  <button data-min="30" type="button">30 分钟</button>
+  <button data-min="60" type="button">60 分钟</button>
+  <button data-min="0" type="button">关闭定时</button>
+</div>
+
+<script src="{{ base }}/assets/app.js" defer></script>
+</body>
+</html>

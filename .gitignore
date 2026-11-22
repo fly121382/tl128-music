@@ -1,0 +1,11 @@
+preview/
+__pycache__/
+*.pyc
+_retry.py
+_kg_cookies.json
+data/songs.backup*.json
+data/songs.*.json
+_runs.sh
+_run*.sh
+.oss_key.json
+docs/media/
