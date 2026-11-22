@@ -320,6 +320,11 @@
       return;
     }
     const txt = (S.cur.l && S.cur.l.length === arr.length && S.cur.l[k]) || arr[k][1];
+    if (/^(作词|作曲|编曲|制作|混音|母带|吉他|贝斯|鼓|和声|录音|监制|出品|统筹|策划|原唱|词|曲)\s*[:：]/.test(txt)) {
+      el.textContent = S.cur.t;
+      el.classList.remove('singing');
+      return;
+    }
     el.textContent = txt;
     el.classList.add('singing');
     el.title = S.cur.t + ' · 特零128';

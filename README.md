@@ -58,3 +58,12 @@ node serve.mjs preview 8777     # 必须用带 Range 的服务，否则进度条
 - MediaSession：手机锁屏、耳机线控可用
 - 收藏 / 最近播放 / 倍速 / 上次听到哪，都存 localStorage
 - 播客：`/podcast.xml`，42 集，可直接订阅到小宇宙、Apple Podcasts
+
+## 音频托管（阿里云 OSS）
+
+音频不在仓库里，全在阿里云 OSS：hubingsf/tl128-music/media/（公网读、支持 Range、audio/mp4）。
+config.json 里的 `mediaBase` 指向它，构建时音频 URL 直接拼到 OSS；仓库里只有 5 MB 左右的静态文件。
+
+- 传新歌：`python upload_oss.py`（已存在且大小一致会自动跳过）
+- 换 bucket/地域：改 `config.json` 的 `mediaBase`，再 `python build.py`
+- 密钥放 `.oss_key.json`（已 gitignore，不要提交）
