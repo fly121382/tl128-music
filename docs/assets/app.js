@@ -334,6 +334,14 @@
   function syncLyrics() {
     const box = document.querySelector('.lyrics[data-sync]');
     if (!box || !S.cur || !Array.isArray(S.cur.y)) return;
+    // 页面上的歌词不是正在播的那首 → 不要乱高亮
+    if (box.dataset.song && box.dataset.song !== S.cur.id) {
+      if (box._k !== -2) {
+        box._k = -2;
+        box.querySelectorAll('.lrc-line').forEach((n) => n.classList.remove('on'));
+      }
+      return;
+    }
     const arr = S.cur.y;
     const t = audio.currentTime + 0.15 + (S.cur.o || 0) + (S.off[S.cur.id] || 0);
     let k = -1;
@@ -460,7 +468,7 @@
             </div>
           </div>
         </div>
-        <div class="lyrics"${synced ? ' data-sync="1"' : ''}>
+        <div class="lyrics"${synced ? ` data-sync="1" data-song="${esc(s.id)}"` : ''}>
           <h2>歌词${synced ? ' · 同步' : ''}
             ${synced ? `<span class="lrc-nudge">
               <button data-nudge="-2" type="button">−2s</button>
