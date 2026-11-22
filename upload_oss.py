@@ -30,7 +30,7 @@ def main():
             print("[%02d/%d] 缺源文件 %s" % (i, len(songs), s.get("file")))
             continue
         size = os.path.getsize(src)
-        key = "tl128-music/media/%s.m4a" % s["id"]
+        key = "tl128-music/media/%s.m4a" % (s.get("slug") or s["id"])
         meta = None
         try:
             meta = bucket.head_object(key)

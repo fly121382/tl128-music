@@ -174,7 +174,8 @@
    "再跳一支"
   ],
   "star": false,
-  "nosync": false
+  "nosync": false,
+  "slug": "dance-monkey"
  },
  {
   "id": "Departures-～あなたにおくるアイの歌～",
@@ -289,7 +290,8 @@
   ],
   "star": true,
   "nosync": false,
-  "lyrics_from": "netease:31649312"
+  "lyrics_from": "netease:31649312",
+  "slug": "departures-anata-ni-okuru-ai-no-uta"
  },
  {
   "id": "下雨天",
@@ -336,7 +338,8 @@
   "file": "特零128 - 下雨天.m4a",
   "tr": null,
   "star": true,
-  "nosync": false
+  "nosync": false,
+  "slug": "xia-yu-tian"
  },
  {
   "id": "不得不爱",
@@ -383,7 +386,8 @@
   "file": "特零128 - 不得不爱.m4a",
   "tr": null,
   "star": true,
-  "nosync": false
+  "nosync": false,
+  "slug": "bu-de-bu-ai"
  },
  {
   "id": "凄美地",
@@ -465,7 +469,8 @@
   "lyrics_from": "lrc:郭顶 - 凄美地.lrc",
   "tr": null,
   "star": true,
-  "nosync": false
+  "nosync": false,
+  "slug": "qi-mei-di"
  },
  {
   "id": "別の人の彼女になったよ",
@@ -586,7 +591,8 @@
   "star": false,
   "cover_from": "netease",
   "lyrics_from": "netease:1324271679",
-  "nosync": false
+  "nosync": false,
+  "slug": "betsu-no-hito-no-kanojo-ni-natta-yo"
  },
  {
   "id": "匆匆那年",
@@ -671,7 +677,8 @@
   "file": "特零128 - 匆匆那年.m4a",
   "tr": null,
   "star": true,
-  "nosync": false
+  "nosync": false,
+  "slug": "cong-cong-na-nian"
  },
  {
   "id": "千梦",
@@ -703,7 +710,8 @@
   "file": "特零128 - 千梦.m4a",
   "tr": null,
   "star": false,
-  "nosync": false
+  "nosync": false,
+  "slug": "qian-meng"
  },
  {
   "id": "危险派对",
@@ -820,7 +828,8 @@
   "lyrics_from": "lrc:危险派对-王以太.lrc",
   "tr": null,
   "star": true,
-  "nosync": false
+  "nosync": false,
+  "slug": "wei-xian-pai-dui"
  },
  {
   "id": "反方向的钟-(Live)",
@@ -858,7 +867,8 @@
   "file": "特零128 - 反方向的钟 (Live).m4a",
   "tr": null,
   "star": true,
-  "nosync": false
+  "nosync": false,
+  "slug": "fan-fang-xiang-de-zhong-live"
  },
  {
   "id": "叹服",
@@ -927,7 +937,8 @@
   "lyrics_from": "lrclib",
   "tr": null,
   "star": true,
-  "nosync": false
+  "nosync": false,
+  "slug": "tan-fu"
  },
  {
   "id": "城府",
@@ -990,7 +1001,8 @@
   "lyrics_from": "netease:167885",
   "tr": null,
   "star": false,
-  "nosync": false
+  "nosync": false,
+  "slug": "cheng-fu"
  },
  {
   "id": "大风吹",
@@ -1032,7 +1044,8 @@
   "lyrics_from": "netease:411314657",
   "tr": null,
   "star": true,
-  "nosync": false
+  "nosync": false,
+  "slug": "da-feng-chui"
  },
  {
   "id": "如愿",
@@ -1099,7 +1112,8 @@
   "lyrics_from": "lrclib",
   "tr": null,
   "star": false,
-  "nosync": false
+  "nosync": false,
+  "slug": "ru-yuan"
  },
  {
   "id": "如果当时",
@@ -1140,7 +1154,8 @@
   "lyrics_from": "lrclib",
   "tr": null,
   "star": false,
-  "nosync": false
+  "nosync": false,
+  "slug": "ru-guo-dang-shi"
  },
  {
   "id": "山海",
@@ -1178,7 +1193,8 @@
   "lyrics_from": "lrclib",
   "tr": null,
   "star": false,
-  "nosync": false
+  "nosync": false,
+  "slug": "shan-hai"
  },
  {
   "id": "心做し",
@@ -1233,7 +1249,8 @@
    "呐，如果我的心愿能够实现"
   ],
   "star": true,
-  "nosync": false
+  "nosync": false,
+  "slug": "kokoro-nashi"
  },
  {
   "id": "心墙",
@@ -1288,7 +1305,8 @@
   "lyrics_from": "netease:27671269",
   "tr": null,
   "star": false,
-  "nosync": false
+  "nosync": false,
+  "slug": "xin-qiang"
  },
  {
   "id": "懒人",
@@ -1355,7 +1373,8 @@
   "lyrics_from": "netease:1836311304",
   "tr": null,
   "star": false,
-  "nosync": false
+  "nosync": false,
+  "slug": "lan-ren"
  },
  {
   "id": "我想要占据你",
@@ -1423,7 +1442,8 @@
   "lyrics_from": "lrclib",
   "tr": null,
   "star": false,
-  "nosync": false
+  "nosync": false,
+  "slug": "wo-xiang-yao-zhan-ju-ni"
  },
  {
   "id": "我等你到三十五岁",
@@ -1479,7 +1499,8 @@
   "lyrics_from": "lrc:我等你到三十五岁-晃儿.lrc",
   "tr": null,
   "star": false,
-  "nosync": false
+  "nosync": false,
+  "slug": "wo-deng-ni-dao-san-shi-wu-sui"
  },
  {
   "id": "搁浅",
@@ -1540,7 +1561,8 @@
   "lyrics_from": "lrclib",
   "tr": null,
   "star": false,
-  "nosync": false
+  "nosync": false,
+  "slug": "ge-qian"
  },
  {
   "id": "没有理想的人不伤心",
@@ -1624,7 +1646,8 @@
   "lyrics_from": "lrclib",
   "tr": null,
   "star": true,
-  "nosync": false
+  "nosync": false,
+  "slug": "mei-you-li-xiang-de-ren-bu-shang-xin"
  },
  {
   "id": "漠河舞厅",
@@ -1680,7 +1703,8 @@
   "lyrics_from": "netease:1895661317",
   "tr": null,
   "star": true,
-  "nosync": false
+  "nosync": false,
+  "slug": "mo-he-wu-ting"
  },
  {
   "id": "爱你",
@@ -1750,7 +1774,8 @@
   "lyrics_from": "netease:297710",
   "tr": null,
   "star": false,
-  "nosync": false
+  "nosync": false,
+  "slug": "ai-ni"
  },
  {
   "id": "牵丝戏",
@@ -1814,7 +1839,8 @@
   "lyrics_from": "lrclib",
   "tr": null,
   "star": true,
-  "nosync": false
+  "nosync": false,
+  "slug": "qian-si-xi"
  },
  {
   "id": "琴师",
@@ -1875,7 +1901,8 @@
   "file": "特零128 - 琴师.m4a",
   "tr": null,
   "star": true,
-  "nosync": false
+  "nosync": false,
+  "slug": "qin-shi"
  },
  {
   "id": "百年孤寂",
@@ -1983,7 +2010,8 @@
   "lyrics_from": "lrc:百年孤寂-王菲.lrc",
   "tr": null,
   "star": false,
-  "nosync": false
+  "nosync": false,
+  "slug": "bai-nian-gu-ji"
  },
  {
   "id": "童话镇",
@@ -2057,7 +2085,8 @@
   "file": "特零128 - 童话镇.m4a",
   "tr": null,
   "star": false,
-  "nosync": false
+  "nosync": false,
+  "slug": "tong-hua-zhen"
  },
  {
   "id": "第一次爱的人",
@@ -2143,7 +2172,8 @@
   "tr": null,
   "star": true,
   "nosync": false,
-  "lyrics_from": "netease:297845"
+  "lyrics_from": "netease:297845",
+  "slug": "di-yi-ci-ai-de-ren"
  },
  {
   "id": "素颜",
@@ -2230,7 +2260,8 @@
   "file": "特零128 - 素颜.m4a",
   "tr": null,
   "star": false,
-  "nosync": false
+  "nosync": false,
+  "slug": "su-yan"
  },
  {
   "id": "红玫瑰",
@@ -2323,7 +2354,8 @@
   "file": "特零128 - 红玫瑰.m4a",
   "tr": null,
   "star": false,
-  "nosync": false
+  "nosync": false,
+  "slug": "hong-mei-gui"
  },
  {
   "id": "苍蝇",
@@ -2398,7 +2430,8 @@
   "lyrics_from": "lrc:苍蝇（翻自 赤羽）-三无MarBlue.lrc",
   "tr": null,
   "star": true,
-  "nosync": false
+  "nosync": false,
+  "slug": "cang-ying"
  },
  {
   "id": "走马",
@@ -2489,7 +2522,8 @@
   "lyrics_from": "lrc:走马-陈粒.lrc",
   "tr": null,
   "star": true,
-  "nosync": false
+  "nosync": false,
+  "slug": "zou-ma"
  },
  {
   "id": "跟悲伤结了帐",
@@ -2614,7 +2648,8 @@
   "lyrics_from": "lrc:Gareth.T,揽佬SKAI ISYOURGOD - 跟悲伤结了帐.lrc",
   "tr": null,
   "star": false,
-  "nosync": false
+  "nosync": false,
+  "slug": "gen-bei-shang-jie-le-zhang"
  },
  {
   "id": "迷人的危险",
@@ -2677,7 +2712,8 @@
   ],
   "tr": null,
   "star": false,
-  "nosync": false
+  "nosync": false,
+  "slug": "mi-ren-de-wei-xian"
  },
  {
   "id": "送别",
@@ -2711,7 +2747,8 @@
   "lyrics_from": "netease:1959437612",
   "tr": null,
   "star": true,
-  "nosync": false
+  "nosync": false,
+  "slug": "song-bie"
  },
  {
   "id": "问情",
@@ -2802,7 +2839,8 @@
   "lyrics_from": "netease:1919524295",
   "tr": null,
   "star": false,
-  "nosync": false
+  "nosync": false,
+  "slug": "wen-qing"
  },
  {
   "id": "雨爱",
@@ -2860,7 +2898,8 @@
   "lyrics_from": "lrclib",
   "tr": null,
   "star": false,
-  "nosync": false
+  "nosync": false,
+  "slug": "yu-ai"
  },
  {
   "id": "黑暗骑士",
@@ -2978,7 +3017,8 @@
   "lyrics_from": "lrc:黑暗骑士-林俊杰.lrc",
   "tr": null,
   "star": false,
-  "nosync": false
+  "nosync": false,
+  "slug": "hei-an-qi-shi"
  },
  {
   "id": "黑色毛衣",
@@ -3024,7 +3064,8 @@
   "lyrics_from": "lrclib",
   "tr": null,
   "star": true,
-  "nosync": false
+  "nosync": false,
+  "slug": "hei-se-mao-yi"
  },
  {
   "id": "龙卷风",
@@ -3070,6 +3111,7 @@
   "lyrics_from": "lrclib",
   "tr": null,
   "star": true,
-  "nosync": false
+  "nosync": false,
+  "slug": "long-juan-feng"
  }
 ]

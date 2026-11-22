@@ -132,7 +132,8 @@ def main():
 
     for s in songs:
         s["dur_txt"] = mmss(s["dur"])
-        s["media_file"] = s["id"] + ".m4a"
+        # 音频文件名用 ASCII slug（老外/手机播放器里不会变乱码），不写 slug 的旧数据回落到 id
+        s["media_file"] = (s.get("slug") or s["id"]) + ".m4a"
         media_base = (cfg.get("mediaBase") or "").rstrip("/")
         if media_base:
             s["media_url"] = "%s/media/%s" % (media_base, urllib.parse.quote(s["media_file"]))
