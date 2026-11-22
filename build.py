@@ -143,8 +143,10 @@ def main():
             s["media_rel"] = "media/" + urllib.parse.quote(s["media_file"])
         s["cover_url"] = "%s/%s" % (base, urllib.parse.quote(s.get("cover") or "assets/icon.png"))
         s["cover_rel"] = urllib.parse.quote(s.get("cover") or "assets/icon.png")
-        s["url"] = "%s/#/song/%s" % (base, urllib.parse.quote(s["id"]))
-        s["page"] = "song/%s.html" % urllib.parse.quote(s["id"])
+        # 单曲页/分享链接用 ASCII slug（中文歌名在链接里会被百分号编码成一串 %E4%B8%8B…）
+        s["slug"] = s.get("slug") or s["id"]
+        s["url"] = "%s/#/song/%s" % (base, urllib.parse.quote(s["slug"]))
+        s["page"] = "song/%s.html" % urllib.parse.quote(s["slug"])
         s["pubdate"] = datetime(2026, 11, 23, tzinfo=timezone.utc).strftime(
             "%a, %d %b %Y %H:%M:%S +0000")
         s["_pubdate"] = s["pubdate"]
@@ -198,7 +200,7 @@ def main():
         if sync:
             nsync += 1
         feed.append({
-            "id": s["id"], "t": s["title"], "a": s.get("artist") or "佚名",
+            "id": s["id"], "sl": s["slug"], "t": s["title"], "a": s.get("artist") or "佚名",
             "al": s.get("album") or "", "d": s["dur"], "dt": s["dur_txt"],
             "c": s["cover_rel"], "m": s["media_rel"], "sz": s["size"], "kb": s["kbps"],
             "l": s.get("lyrics") or [], "y": sync, "ya": approx if sync else False,
@@ -224,14 +226,26 @@ def main():
                          page_title=None))
 
     for s in songs:
-        open(os.path.join(out_dir, "song", s["id"] + ".html"),
+        open(os.path.join(out_dir, "song", s["slug"] + ".html"),
              "w", encoding="utf-8").write(
             tpl_song.render(s=s, page_title=s["title"], total=len(songs)))
+        # 老链接（song/<歌名>.html）不能 404：留一个跳转壳
+        if s["slug"] != s["id"]:
+            open(os.path.join(out_dir, "song", s["id"] + ".html"),
+                 "w", encoding="utf-8").write(
+                '<!doctype html><meta charset="utf-8">'
+                '<title>%s</title><link rel="canonical" href="%s">'
+                '<meta name="robots" content="noindex">'
+                '<script>location.replace(%s);</script>'
+                '<p>正在跳转…<a href="%s">%s</a></p>\n'
+                % (html.escape(s["title"]), html.escape(s["url"]),
+                   json.dumps(s["url"], ensure_ascii=False), html.escape(s["url"]),
+                   html.escape(s["title"])))
 
     open(os.path.join(out_dir, "podcast.xml"), "w", encoding="utf-8").write(
         build_podcast(cfg, songs, base))
 
-    urls = [base + "/"] + ["%s/song/%s.html" % (base, urllib.parse.quote(s["id"])) for s in songs]
+    urls = [base + "/"] + ["%s/song/%s.html" % (base, urllib.parse.quote(s["slug"])) for s in songs]
     open(os.path.join(out_dir, "sitemap.xml"), "w", encoding="utf-8").write(
         '<?xml version="1.0" encoding="UTF-8"?>'
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'

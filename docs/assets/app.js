@@ -1,4 +1,4 @@
-/* 特零128 的歌 —— 单页播放器
+﻿/* 特零128 的歌 —— 单页播放器
  * 路由：#/   #/song/<id>   #/artists   #/artist/<name>   #/favorites   #/friends
  * 状态存在 localStorage('tl128m')：上次歌曲、进度、收藏、倍速、循环、随机、主题
  */
@@ -12,7 +12,7 @@
     + '&shareUid=609999822d2d3e8d31&pageId=homepage_me';
 
   const S = {
-    songs: [], byId: {}, fav: new Set(), favList: [],
+    songs: [], byId: {}, bySlug: {}, fav: new Set(), favList: [],
     cur: null, qi: -1, shuffle: false, repeat: 'all', speed: 1,
     q: '', sleepAt: 0, sleepTimer: null, fadeTimer: null,
     pos: {},
@@ -26,6 +26,8 @@
     return p.startsWith('/') ? p : '/' + p;
   };
   const enc = (s) => encodeURIComponent(s);
+  // 链接/文件名一律用 ASCII slug；老数据没有 sl 时回落到 id
+  const sl = (s) => (s && (s.sl || s.id)) || '';
 
   /* ---------------------------------------------------------------- storage */
   function load() {
@@ -98,7 +100,7 @@
     $('#p-cover').alt = song.t;
     const t = $('#p-title');
     t.textContent = song.t;
-    t.href = '#/song/' + enc(song.id);
+    t.href = '#/song/' + enc(sl(song));
     $('#p-artist').textContent = '原唱 ' + song.a + ' · 翻唱 特零128';
     $('#t-dur').textContent = song.dt;
     const start = S.pos[song.id] || 0;
@@ -390,7 +392,7 @@
       <span class="s-idx"><span class="num">${i + 1}</span><span class="eq">♪</span></span>
       <img class="s-cover" src="${abs(s.c)}" alt="" loading="lazy" width="44" height="44">
       <span class="s-main">
-        <a class="s-title" href="#/song/${enc(s.id)}">${s.star ? '<span class="s-star" title="特零推荐">★</span>' : ''}${esc(s.t)}</a>
+        <a class="s-title" href="#/song/${enc(sl(s))}">${s.star ? '<span class="s-star" title="特零推荐">★</span>' : ''}${esc(s.t)}</a>
         <span class="s-artist">原唱 · ${esc(s.a)}${s.al ? ' · 《' + esc(s.al) + '》' : ''}</span>
       </span>
       <span class="s-dur">${s.dt}</span>
@@ -429,7 +431,7 @@
   }
 
   function viewSong(id) {
-    const s = S.byId[id];
+    const s = S.byId[id] || S.bySlug[id];
     if (!s) { $('#view').innerHTML = '<p class="loading">没有这首歌。</p>'; return; }
     const rel = S.songs.filter((x) => x.a === s.a && x.id !== s.id);
     const fav = S.fav.has(s.id);
@@ -464,7 +466,7 @@
               <button class="btn primary" data-act="playone" data-id="${esc(s.id)}" type="button">${S.cur && S.cur.id === s.id && !audio.paused ? '正在播放' : '播放'}</button>
               <button class="btn" data-act="fav" data-id="${esc(s.id)}" type="button">${fav ? '♥ 已收藏' : '♡ 收藏'}</button>
               <button class="btn" data-act="share" data-id="${esc(s.id)}" type="button">分享链接</button>
-              <a class="btn" href="/song/${enc(s.id)}.html">单曲页</a>
+              <a class="btn" href="/song/${enc(sl(s))}.html">单曲页</a>
             </div>
           </div>
         </div>
@@ -484,7 +486,7 @@
         ${rel.length ? `<section class="block"><h2 class="block-title"><b>同一原唱</b><span>${esc(s.a)} · ${rel.length} 首</span></h2>
           <ol class="rel-list">${rel.map((x) => `<li data-id="${esc(x.id)}">
             <img src="${abs(x.c)}" alt="" loading="lazy">
-            <a class="t" href="#/song/${enc(x.id)}">${esc(x.t)}</a><span class="d">${x.dt}</span></li>`).join('')}</ol>
+            <a class="t" href="#/song/${enc(sl(x))}">${esc(x.t)}</a><span class="d">${x.dt}</span></li>`).join('')}</ol>
         </section>` : ''}
       </div>`;
     syncNow();
@@ -698,7 +700,7 @@
         if (a === 'playartist') { const l = S.songs.filter((x) => x.a === act.dataset.a); if (l[0]) setCur(l[0], true); }
         if (a === 'share') {
           const s = S.byId[act.dataset.id];
-          const u = location.origin + '/song/' + enc(s.id) + '.html';
+          const u = location.origin + '/song/' + enc(sl(s)) + '.html';
           if (navigator.clipboard) navigator.clipboard.writeText(u).then(() => toast('链接已复制'), () => toast('复制失败'));
           else toast(u);
         }
@@ -760,7 +762,7 @@
       $('#view').innerHTML = '<p class="loading">曲库载入失败，刷新试试。</p>';
       return;
     }
-    S.songs.forEach((s) => { S.byId[s.id] = s; });
+    S.songs.forEach((s) => { S.byId[s.id] = s; S.bySlug[s.sl || s.id] = s; });
     bind();
     route();
     if (S.last && S.byId[S.last]) {
@@ -772,7 +774,7 @@
       $('#p-cover').src = abs(s.c);
       $('#p-cover').alt = s.t;
       $('#p-title').textContent = s.t;
-      $('#p-title').href = '#/song/' + enc(s.id);
+      $('#p-title').href = '#/song/' + enc(sl(s));
       $('#p-artist').textContent = '原唱 ' + s.a + ' · 翻唱 特零128';
       $('#t-dur').textContent = s.dt;
       $('#t-cur').textContent = fmt(pos);
@@ -791,3 +793,5 @@
 
   boot();
 })();
+
+
