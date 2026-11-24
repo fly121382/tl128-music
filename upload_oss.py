@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-"""把 42 首音频传到阿里云 OSS：hubingsf/tl128-music/media/
+"""把音频传到阿里云 OSS：tl128-music-audio/tl128-music/media/
 
+这个桶是给音频单独开的：公开读 + 允许空 Referer（播客 App、直接打开链接、iOS 媒体加载
+都不带 Referer），hubingsf 那边保持严格防盗链，不受影响。
 用法：python upload_oss.py [--dry]
 已存在且大小一致的会跳过。
 """
@@ -13,14 +15,17 @@ import oss2
 ROOT = os.path.dirname(os.path.abspath(__file__))
 KEYFILE = os.path.join(ROOT, ".oss_key.json")
 SONGS = os.path.join(ROOT, "data", "songs.json")
+CONFIG = os.path.join(ROOT, "config.json")
 SRC = r"E:\我唱的歌"
 
 
 def main():
     dry = "--dry" in sys.argv
     k = json.load(open(KEYFILE, encoding="utf-8"))
+    cfg = json.load(open(CONFIG, encoding="utf-8"))
+    bucket_name = cfg.get("ossBucket") or k["bucket"]
     auth = oss2.Auth(k["id"], k["secret"])
-    bucket = oss2.Bucket(auth, "https://oss-cn-shanghai.aliyuncs.com", k["bucket"])
+    bucket = oss2.Bucket(auth, "https://oss-cn-shanghai.aliyuncs.com", bucket_name)
     songs = json.load(open(SONGS, encoding="utf-8"))
     up = skip = 0
     total = 0

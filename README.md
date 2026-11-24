@@ -64,9 +64,14 @@ node serve.mjs preview 8777     # 必须用带 Range 的服务，否则进度条
 
 ## 音频托管（阿里云 OSS）
 
-音频不在仓库里，全在阿里云 OSS：hubingsf/tl128-music/media/（公网读、支持 Range、audio/mp4）。
+音频不在仓库里，全在阿里云 OSS：**tl128-music-audio** 桶的 `tl128-music/media/`（公开读、支持 Range、audio/mp4）。
 config.json 里的 `mediaBase` 指向它，构建时音频 URL 直接拼到 OSS；仓库里只有 5 MB 左右的静态文件。
 
+为什么单独一个桶：`hubingsf` 桶 2026-11 被刷了 38 GB 流量后，那边关掉了「允许空 Referer」，
+只放行 `*.hubingsf.cn` 的 Referer。浏览器放歌没问题，但播客 App、直接打开音频链接、
+部分 iOS Safari 的媒体加载都不带 Referer，会 403。OSS 的 Referer 白名单是桶级的，
+没法只给某个前缀开口子，所以音频独立成桶：允许空 Referer，别的站的 Referer 照样挡。
+
 - 传新歌：`python upload_oss.py`（已存在且大小一致会自动跳过）
-- 换 bucket/地域：改 `config.json` 的 `mediaBase`，再 `python build.py`
+- 换 bucket/地域：改 `config.json` 的 `mediaBase` 和 `ossBucket`，再 `python build.py`
 - 密钥放 `.oss_key.json`（已 gitignore，不要提交）

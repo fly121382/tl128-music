@@ -8,5 +8,6 @@
  "source": "E:\\我唱的歌",
  "startSite": "2026-11-23",
  "footer": "翻唱作品，词曲版权归原作者所有",
- "mediaBase": "https://hubingsf.oss-cn-shanghai.aliyuncs.com/tl128-music"
+ "mediaBase": "https://tl128-music-audio.oss-cn-shanghai.aliyuncs.com/tl128-music",
+ "ossBucket": "tl128-music-audio"
 }
