@@ -57,7 +57,7 @@ node serve.mjs preview 8777     # 必须用带 Range 的服务，否则进度条
 
 ## 技术要点
 
-- 单页应用（hash 路由），播放不中断；每首歌另有 `/song/<id>.html` 静态分享页（带 OG 标签，打开即跳到播放器对应位置）
+- 单页应用（hash 路由），播放不中断；每首歌另有 `/song/<slug>.html` 静态分享页（带 OG 标签，打开即跳到播放器对应位置）
 - MediaSession：手机锁屏、耳机线控可用
 - 收藏 / 最近播放 / 倍速 / 上次听到哪，都存 localStorage
 - 播客：`/podcast.xml`，42 集，可直接订阅到小宇宙、Apple Podcasts
