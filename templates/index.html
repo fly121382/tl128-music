@@ -44,7 +44,7 @@
     <ol class="songs">
       {% for s in songs %}
       <li class="song"><span class="s-idx">{{ loop.index }}</span>
-        <img class="s-cover" src="{{ base }}/{{ s.cover_rel }}" alt="{{ s.title }}">
+        <img class="s-cover" src="{{ s.cover_url }}" alt="{{ s.title }}">
         <span class="s-main"><a class="s-title" href="{{ base }}/{{ s.page }}">{{ s.title }}</a>
         <span class="s-artist">原唱：{{ s.artist }} ｜ {{ s.dur_txt }}</span></span></li>
       {% endfor %}
@@ -62,7 +62,7 @@
 <div class="player" id="player">
   <div class="seekbar" id="seekbar" role="slider" aria-label="播放进度" tabindex="0"><div class="fill" id="seekfill"></div></div>
   <div class="p-inner">
-    <img class="p-cover" id="p-cover" src="{{ base }}/assets/icon.png" alt="">
+    <img class="p-cover" id="p-cover" src="{{ base }}/assets/placeholder.jpg" alt="">
     <div class="p-meta">
       <a class="p-title" id="p-title" href="#/">未在播放</a>
       <span class="p-artist" id="p-artist">点一首歌开始</span>

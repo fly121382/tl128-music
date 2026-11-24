@@ -78,6 +78,8 @@ def brand_images(cfg, out_dir):
     icon = os.path.join(out_dir, "assets", "icon.png")
     if not os.path.exists(icon):
         make(icon, 256, "歌", "特零128")
+    # 播放器在没选歌时的占位图：不要把 130 KB 的 icon.png 塞进首屏
+    make(os.path.join(out_dir, "assets", "placeholder.jpg"), 160, "歌", "特零128")
     return cover, icon
 
 
@@ -141,8 +143,16 @@ def main():
         else:
             s["media_url"] = "%s/media/%s" % (base, urllib.parse.quote(s["media_file"]))
             s["media_rel"] = "media/" + urllib.parse.quote(s["media_file"])
-        s["cover_url"] = "%s/%s" % (base, urllib.parse.quote(s.get("cover") or "assets/icon.png"))
-        s["cover_rel"] = urllib.parse.quote(s.get("cover") or "assets/icon.png")
+        # 封面也放 OSS：GitHub Pages 在国内拉 42 张图要几十秒（实测 ~25 KB/s），阿里云上海几十毫秒
+        cover_base = (cfg.get("coverBase") or "").rstrip("/")
+        if not cover_base and media_base:
+            cover_base = media_base + "/covers"
+        if cover_base:
+            s["cover_url"] = "%s/%s" % (cover_base, urllib.parse.quote(s["media_file"][:-4] + ".jpg"))
+            s["cover_rel"] = s["cover_url"]
+        else:
+            s["cover_url"] = "%s/%s" % (base, urllib.parse.quote(s.get("cover") or "assets/icon.png"))
+            s["cover_rel"] = urllib.parse.quote(s.get("cover") or "assets/icon.png")
         # 单曲页/分享链接用 ASCII slug（中文歌名在链接里会被百分号编码成一串 %E4%B8%8B…）
         if not s.get("slug"):
             print("!! 这首歌没有 slug，链接会退回中文名：%s（跑 python make_slugs.py --write）" % s["title"])
@@ -162,7 +172,8 @@ def main():
             else:
                 print("!! 缺少音频: %s" % s.get("file"))
         cov = os.path.join(DATA, "covers", s["id"] + ".jpg")
-        if os.path.exists(cov):
+        if not cover_base and os.path.exists(cov):
+            # 封面走本地时就照旧拷进 docs；走 OSS 时不进仓库（省 4.7 MB）
             link_or_copy(cov, os.path.join(out_dir, "assets", "covers", s["id"] + ".jpg"))
 
     shutil.copytree(ASSETS, os.path.join(out_dir, "assets"), dirs_exist_ok=True)

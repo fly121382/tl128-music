@@ -23,9 +23,11 @@ def main():
         bad.append("缺原唱：%s" % ", ".join(no_artist))
 
     media_base = ""
+    cover_base = ""
     try:
         cfg = json.load(open(os.path.join(ROOT, "config.json"), encoding="utf-8"))
         media_base = (cfg.get("mediaBase") or "").strip()
+        cover_base = (cfg.get("coverBase") or "").strip() or (media_base.rstrip("/") + "/covers" if media_base else "")
     except Exception:  # noqa: BLE001
         pass
     for s in songs:
@@ -37,7 +39,7 @@ def main():
         elif os.path.getsize(media) < 10000:
             bad.append("音频过小：%s" % s["id"])
         cov = os.path.join(OUT, "assets", "covers", s["id"] + ".jpg")
-        if not os.path.exists(cov):
+        if not cover_base and not os.path.exists(cov):
             bad.append("缺封面：%s" % s["id"])
 
     feed_path = os.path.join(OUT, "assets", "songs.json")
@@ -50,8 +52,10 @@ def main():
                 bad.append("前端数据缺字段 %s：%s" % (key, f.get("id")))
         if not media_base and not os.path.exists(os.path.join(OUT, urllib.parse.unquote(f["m"]))):
             bad.append("前端媒体路径无效：%s" % f["m"])
-        if not os.path.exists(os.path.join(OUT, urllib.parse.unquote(f["c"]))):
+        if not cover_base and not os.path.exists(os.path.join(OUT, urllib.parse.unquote(f["c"]))):
             bad.append("前端封面路径无效：%s" % f["c"])
+        if cover_base and not f["c"].startswith(cover_base):
+            bad.append("前端封面没走 OSS：%s" % f["c"])
 
     # 播客
     pod = os.path.join(OUT, "podcast.xml")

@@ -1,4 +1,4 @@
-﻿/* 特零128 的歌 —— 单页播放器
+/* 特零128 的歌 —— 单页播放器
  * 路由：#/   #/song/<id>   #/artists   #/artist/<name>   #/favorites   #/friends
  * 状态存在 localStorage('tl128m')：上次歌曲、进度、收藏、倍速、循环、随机、主题
  */
@@ -82,7 +82,7 @@
         title: s.t,
         artist: '原唱 ' + s.a + ' ｜ 翻唱 特零128',
         album: s.al || '我唱的歌',
-        artwork: [{ src: abs(s.c), sizes: '600x600', type: 'image/jpeg' }],
+        artwork: [{ src: abs(s.c), sizes: '400x400', type: 'image/jpeg' }],
       });
       navigator.mediaSession.setActionHandler('play', () => play());
       navigator.mediaSession.setActionHandler('pause', () => pause());

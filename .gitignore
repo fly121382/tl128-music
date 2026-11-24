@@ -9,3 +9,4 @@ _runs.sh
 _run*.sh
 .oss_key.json
 docs/media/
+data/covers_opt/
