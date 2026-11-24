@@ -150,9 +150,12 @@ def main():
         if cover_base:
             s["cover_url"] = "%s/%s" % (cover_base, urllib.parse.quote(s["media_file"][:-4] + ".jpg"))
             s["cover_rel"] = s["cover_url"]
+            # 列表里只显示 44px，用 OSS 实时缩图（3 KB vs 25 KB）
+            s["thumb_url"] = s["cover_url"] + "?x-oss-process=image/resize,w_120/quality,q_82"
         else:
             s["cover_url"] = "%s/%s" % (base, urllib.parse.quote(s.get("cover") or "assets/icon.png"))
             s["cover_rel"] = urllib.parse.quote(s.get("cover") or "assets/icon.png")
+            s["thumb_url"] = s["cover_url"]
         # 单曲页/分享链接用 ASCII slug（中文歌名在链接里会被百分号编码成一串 %E4%B8%8B…）
         if not s.get("slug"):
             print("!! 这首歌没有 slug，链接会退回中文名：%s（跑 python make_slugs.py --write）" % s["title"])
@@ -215,7 +218,7 @@ def main():
         feed.append({
             "id": s["id"], "sl": s["slug"], "t": s["title"], "a": s.get("artist") or "佚名",
             "al": s.get("album") or "", "d": s["dur"], "dt": s["dur_txt"],
-            "c": s["cover_rel"], "m": s["media_rel"], "sz": s["size"], "kb": s["kbps"],
+            "c": s["cover_rel"], "th": s["thumb_url"], "m": s["media_rel"], "sz": s["size"], "kb": s["kbps"],
             "l": s.get("lyrics") or [], "y": sync, "ya": approx if sync else False,
             "o": float(offsets.get(s["id"]) or 0),
             "tr": s.get("tr") or None, "star": bool(s.get("star")),

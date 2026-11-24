@@ -378,7 +378,7 @@
     $('#dw-count').textContent = S.songs.length + ' 首';
     $('#dw-list').innerHTML = list.map((s) => `
       <li class="dw-item${S.cur && S.cur.id === s.id ? ' cur' : ''}" data-id="${esc(s.id)}">
-        <img src="${abs(s.c)}" alt="" loading="lazy">
+        <img src="${abs(s.th || s.c)}" alt="" loading="lazy">
         <span class="w"><span class="t">${esc(s.t)}</span><span class="a">原唱 ${esc(s.a)}</span></span>
         <span class="d">${s.dt}</span>
       </li>`).join('') || '<li class="loading">没有匹配的歌</li>';
@@ -390,7 +390,7 @@
     const fav = S.fav.has(s.id);
     return `<li class="song${on ? ' cur' : ''}" data-id="${esc(s.id)}">
       <span class="s-idx"><span class="num">${i + 1}</span><span class="eq">♪</span></span>
-      <img class="s-cover" src="${abs(s.c)}" alt="" loading="lazy" width="44" height="44">
+      <img class="s-cover" src="${abs(s.th || s.c)}" alt="" loading="lazy" width="44" height="44">
       <span class="s-main">
         <a class="s-title" href="#/song/${enc(sl(s))}">${s.star ? '<span class="s-star" title="特零推荐">★</span>' : ''}${esc(s.t)}</a>
         <span class="s-artist">原唱 · ${esc(s.a)}${s.al ? ' · 《' + esc(s.al) + '》' : ''}</span>
