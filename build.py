@@ -144,9 +144,16 @@ def main():
             s["media_url"] = "%s/media/%s" % (base, urllib.parse.quote(s["media_file"]))
             s["media_rel"] = "media/" + urllib.parse.quote(s["media_file"])
         # 封面也放 OSS：GitHub Pages 在国内拉 42 张图要几十秒（实测 ~25 KB/s），阿里云上海几十毫秒
-        cover_base = (cfg.get("coverBase") or "").rstrip("/")
-        if not cover_base and media_base:
+        # 想退回「封面放 GitHub Pages」就把 config.json 的 coverBase 设成 false
+        raw_cover_base = cfg.get("coverBase", None)
+        if raw_cover_base is False:
+            cover_base = ""
+        elif raw_cover_base:
+            cover_base = raw_cover_base.rstrip("/")
+        elif media_base:
             cover_base = media_base + "/covers"
+        else:
+            cover_base = ""
         if cover_base:
             s["cover_url"] = "%s/%s" % (cover_base, urllib.parse.quote(s["media_file"][:-4] + ".jpg"))
             s["cover_rel"] = s["cover_url"]

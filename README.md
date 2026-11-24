@@ -68,7 +68,7 @@ node serve.mjs preview 8777     # 必须用带 Range 的服务，否则进度条
 音频不在仓库里，全在阿里云 OSS：**tl128-music-audio** 桶的 `tl128-music/media/`（公开读、支持 Range、audio/mp4）。
 封面也在同一个桶的 `tl128-music/covers/<slug>.jpg`（400×400，平均 25 KB）：GitHub Pages 实测只有 ~25 KB/s，
 42 张 600×600 封面要拉半分钟；阿里云上海 0.15 秒。config.json 里的 `mediaBase` 指向桶，
-`coverBase` 不写就默认 `<mediaBase>/covers`；构建时封面/音频 URL 直接拼到 OSS，仓库里只有 1 MB 静态文件。
+`coverBase` 不写就默认 `<mediaBase>/covers`，写成 `false` 就退回「封面放 GitHub Pages」；构建时封面/音频 URL 直接拼到 OSS，仓库里只有 1 MB 静态文件。
 
 为什么单独一个桶：`hubingsf` 桶 2026-11 被刷了 38 GB 流量后，那边关掉了「允许空 Referer」，
 只放行 `*.hubingsf.cn` 的 Referer。浏览器放歌没问题，但播客 App、直接打开音频链接、
