@@ -10,6 +10,10 @@
 用法：
   python export_lyrics.py            # 写到 E:\\我唱的歌
   python export_lyrics.py --dry
+
+产物：E:\\我唱的歌\\<歌名>.lrc（音乐播放器用）
+      E:\\我唱的歌\\字幕\\<歌名>.srt（剪辑用；放子目录是因为 VLC 会把同目录所有
+      srt 都挂成字幕轨，42 首放一起就变成 42 条轨）
 """
 import json
 import os
@@ -98,9 +102,10 @@ def main():
             if end <= t + 0.03:
                 end = t + 0.03
             srt.append("%d\n%s --> %s\n%s\n" % (i + 1, srt_time(t), srt_time(end), txt))
-        srt_path = os.path.join(OUT, base + ".srt")
+        srt_path = os.path.join(OUT, "字幕", base + ".srt")
 
         if not dry:
+            os.makedirs(os.path.join(OUT, "字幕"), exist_ok=True)
             with open(lrc_path, "w", encoding="utf-8", newline="\r\n") as f:
                 f.write("\n".join(lrc) + "\n")
             with open(srt_path, "w", encoding="utf-8", newline="\r\n") as f:
