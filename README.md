@@ -48,6 +48,8 @@ git push
   - 来自本地 .lrc 的「同一版伴奏」（时长差 ≤20 秒）自动可用 → 目前 9 首
   - 其余用 `/tools/tapper.html` 打点：放歌 → 空格逐行记时间 → 导出 JSON 丢进 `data/sync/` → 重新 build
 - 前端：`songs.json` 里带 `y` 字段的会自动高亮当前行并在歌词框里滚动
+- 导到本地：`python export_lyrics.py` —— 按站上的时间轴（含 `data/offsets.json` 的整体偏移）
+  给 `E:\我唱的歌` 里每首歌写同名 `.lrc` + `.srt`，可直接丢给播放器/剪辑软件
 
 ## 本地预览
 
